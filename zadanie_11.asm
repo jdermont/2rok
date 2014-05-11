@@ -40,13 +40,13 @@ printuj endp
 dwojkowy proc
 	dwojkowe:
 		mov ah,0
-		div dh
-		mov [zmienna],al
+		div dh ; dzieli przez dh, czyli przez 2 jak ustalone w 17. linijce
+		mov [zmienna],al ; kopiuje zawartosc al
 		mov al,ah
-		add al,30H
-		mov [tablica+bx],al
-		inc bx
-		mov al,[zmienna]
+		add al,30H ; dodaje 30h czyli +48, czyli jak wyjdzie 5 to bedzie 53 i to bedzie '5' w kodzie ASCII
+		mov [tablica+bx],al ; zapisuje do tab[bx]
+		inc bx ; bx++
+		mov al,[zmienna] ; przywraca al
 		cmp al,0
 		jna skocz1
 		jmp dwojkowe
@@ -54,7 +54,7 @@ dwojkowy proc
 	mov cx,bx
 	dec bx
 	call printuj
-	mov al,62H
+	mov al,62H ; drukuje 'b'
 	mov ah,0EH
 	int 10H
 	mov al,20H
@@ -115,8 +115,37 @@ dziesietny proc
 	mov al,64H
 	mov ah,0EH
 	int 10H
+	mov al,20H
+	int 10H
+	mov al,[stala]
+	mov [zmienna],al
+	mov dh,16
+	mov bx,0
 	ret
 dziesietny endp
+
+szesnastkowy proc
+	szesnastkowe:
+		mov ah,0
+		div dh
+		mov [zmienna],al
+		mov al,ah
+		add al,30H
+		mov [tablica+bx],al
+		inc bx
+		mov al,[zmienna]
+		cmp al,0
+		jna skocz4
+		jmp szesnastkowe
+	skocz4:
+	mov cx,bx
+	dec bx
+	call printuj
+	mov al,68H
+	mov ah,0EH
+	int 10H
+	ret
+szesnastkowy endp
 
 kod ends
 end start
