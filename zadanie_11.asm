@@ -124,19 +124,26 @@ dziesietny proc
 	ret
 dziesietny endp
 
+; nietestowane
 szesnastkowy proc
 	szesnastkowe:
 		mov ah,0
 		div dh
 		mov [zmienna],al
 		mov al,ah
+		cmp al,9
+		jg wieksze
+		wieksze:
+			add al,37H
+			jmp dalej
 		add al,30H
-		mov [tablica+bx],al
-		inc bx
-		mov al,[zmienna]
-		cmp al,0
-		jna skocz4
-		jmp szesnastkowe
+		dalej:
+			mov [tablica+bx],al
+			inc bx
+			mov al,[zmienna]
+			cmp al,0
+			jna skocz4
+			jmp szesnastkowe
 	skocz4:
 	mov cx,bx
 	dec bx
